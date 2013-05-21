@@ -42,9 +42,21 @@ class Login:
         else:
             print "Login Sccessfully!"
 
-    def signin(self):
-        #postdata = {}
-        #postdata = urllib.urlopen(postdata)
+    def unchecked(self):
+        print "check status ..."
+        req = urllib2.Request(
+            url="http://www.xiami.com", data=None, headers=self.signin_header)
+        res = urllib2.urlopen(req).read()
+        res = str(res).decode('utf-8')
+        self.cookie.save(self.cookieFile)
+        if u"天<span>已连续签到</span>" in res:
+            print "already checked in!"
+            return False
+        else:
+            print "have not been check in ..."
+            return True
+
+    def checkin(self):
         print "signing ..."
         req = urllib2.Request(
             url="http://www.xiami.com/task/signin", data=None, headers=self.signin_header)
@@ -66,4 +78,5 @@ class Login:
 if __name__ == '__main__':
     user = Login("twilight.zheng@gmail.com", "zllz8374721")
     user.login()
-    user.signin()
+    if user.unchecked():
+        user.checkin()
