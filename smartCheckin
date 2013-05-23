@@ -1,0 +1,15 @@
+#!/usr/bin/python
+# encoding:utf-8
+
+import os
+
+self_path = os.path.split(os.path.realpath(__file__))[0]
+
+list = os.listdir(self_path)
+
+for line in list:
+    filename = os.path.join(self_path, line)
+    if os.path.isfile(filename):
+        ext_name = filename.split('.')[-1]
+        if (ext_name == 'py'):
+            os.system('python ' + filename)

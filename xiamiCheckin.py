@@ -7,7 +7,7 @@ import cookielib
 import sys
 
 
-class Login:
+class Xiami:
     login_header = {
         'User-Agent': "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.4 (KHTML, like Gecko) Chrome/22.0.1229.79 Safari/537.4"}
     signin_header = {
@@ -16,7 +16,7 @@ class Login:
     email = ''
     password = ''
     cookie = None
-    cookieFile = './cookie.dat'
+    cookieFile = './cookie.xiami.dat'
 
     def __init__(self, email, password):
         self.email = email
@@ -35,7 +35,7 @@ class Login:
         res = urllib2.urlopen(req).read()
         self.cookie.save(self.cookieFile)
         res = str(res).decode('utf-8')
-        print res
+        # print res
         if u"Email 或者密码错误" in res:
             print "Login failed due to Email or Password error..."
             sys.exit()
@@ -72,11 +72,10 @@ class Login:
             print "signing failed due to unknown reasons ..."
             sys.exit()
 
-        print 'signing successfully!'
-        print self.email, 'have signed', res, 'days continuously...'
+        print 'checked in successfully!'
 
 if __name__ == '__main__':
-    user = Login("twilight.zheng@gmail.com", "zllz8374721")
+    user = Xiami("twilight.zheng@gmail.com", "zllz8374721")
     user.login()
     if user.unchecked():
         user.checkin()
