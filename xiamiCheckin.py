@@ -49,12 +49,12 @@ class Login:
         res = urllib2.urlopen(req).read()
         res = str(res).decode('utf-8')
         self.cookie.save(self.cookieFile)
-        if u"天<span>已连续签到</span>" in res:
-            print "already checked in!"
-            return False
-        else:
+        if u"<a class=\"checkin text\" id=\"check_in\" href=\"javascript:;\" title=\"\">签到得体验点<span>Check in</span></a>" in res:
             print "have not been check in ..."
             return True
+        else:
+            print "already checked in ..."
+            return False
 
     def checkin(self):
         print "signing ..."
