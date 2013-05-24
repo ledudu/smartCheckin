@@ -13,3 +13,5 @@ for line in list:
         ext_name = filename.split('.')[-1]
         if (ext_name == 'py'):
             os.system('python ' + filename)
+
+print "smartCheckin done!"
