@@ -94,3 +94,4 @@ class V2EX:
 if __name__ == '__main__':
     user = V2EX("jinyue524", "zllz8374721")
     user.get_award()
+    print "v2ex check in done! \n\n"

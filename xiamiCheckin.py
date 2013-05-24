@@ -79,3 +79,4 @@ if __name__ == '__main__':
     user.login()
     if user.unchecked():
         user.checkin()
+    print "xiami checkin done! \n\n"
