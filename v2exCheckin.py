@@ -89,7 +89,6 @@ class V2EX:
         award_req = v2ex_session.get(click_url, headers=headers)
         award_soup = BeautifulSoup(award_req.content)
         result_tag = award_soup.find('div', class_="message")
-        print result_tag.string
 
 if __name__ == '__main__':
     user = V2EX("jinyue524", "zllz8374721")
