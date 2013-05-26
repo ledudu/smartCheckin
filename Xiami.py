@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 import datetime
-import time
 
 try:
     import requests
@@ -65,7 +64,6 @@ class Xiami:
             return True
 
     def checkin(self):
-        time.sleep(80)
         checkin_req = self.xiami_session.get(
             self.checkin_url, headers=self.headers)
         if checkin_req.status_code == requests.codes.ok:

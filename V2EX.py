@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 import datetime
-import time
 
 try:
     import requests
@@ -85,7 +84,6 @@ class V2EX:
         last_dot_index = click_href.find("'", first_dot_index + 1)
         click_url = self.main_url + click_href[
             first_dot_index + 1: last_dot_index]
-        time.sleep(80)
         award_req = self.v2ex_session.get(click_url, headers=self.headers)
         if award_req.status_code == requests.codes.ok:
             print datetime.datetime.now(), " : v2ex checkin successfully ! \n"
