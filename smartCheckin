@@ -7,12 +7,10 @@ import V2EX
 print "smartCheckin start ..."
 ##Xiami Checkin
 xiami = Xiami.Xiami("twilight.zheng@gmail.com", "zllz8374721")
-xiami.login()
-if xiami.unchecked():
-    xiami.checkin()
+xiami.run()
 
 ##V2EX Checkin
 v2ex = V2EX.V2EX("jinyue524", "zllz8374721")
-v2ex.get_award()
+v2ex.run()
 
 print "smartCheckin done!"

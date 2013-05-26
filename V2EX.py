@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 import datetime
+import time
 
 try:
     import requests
 except ImportError:
     print ImportError
     print "please try 'sudo pip install requests' to fix it !"
-
-import time
 
 try:
     from bs4 import BeautifulSoup
@@ -30,21 +29,22 @@ class V2EX:
                     "Referer": "http://www.v2ex.com/signin"}
     headers = {"User-Agent": user_agent}
     v2ex_session = requests.Session()
+    main_soup = BeautifulSoup()
 
     def __init__(self, username, password):
         self.username = username
         self.password = password
-        print "start V2EX checkin at ", datetime.datetime.now(), " ..."
+        print datetime.datetime.now(), " : start 'V2EX' checkin for  ", self.username
 
-    def get_login_info(self):
-        v2ex_main_req = self.v2ex_session.get(self.signin_url, headers=self.headers)
+    def login(self):
+        # get login_info random 'once' value
+        v2ex_main_req = self.v2ex_session.get(
+            self.signin_url, headers=self.headers)
         v2ex_main_tag = BeautifulSoup(v2ex_main_req.content)
-
         form_tag = v2ex_main_tag.find(
             'form', attrs={"method": "post", "action": "/signin"})
         input_once_tag = form_tag.find('input', attrs={"name": "once"})
         input_once_value = input_once_tag.attrs["value"]
-
         login_info = {
             "next": "/",
             "u": self.username,
@@ -53,35 +53,45 @@ class V2EX:
             "next": "/"
         }
 
-        return login_info
-
-    def get_award(self):
         # login
-        login_info = self.get_login_info()
-
-        self.v2ex_session.post(self.signin_url, data=login_info, headers=self.post_headers)
+        self.v2ex_session.post(
+            self.signin_url, data=login_info, headers=self.post_headers)
         main_req = self.v2ex_session.get(self.main_url, headers=self.headers)
-        main_soup = BeautifulSoup(main_req.content)
-        top_tag = main_soup.find('div', attrs={"id": "Top"})
+        self.main_soup = BeautifulSoup(main_req.content)
+        top_tag = self.main_soup.find('div', attrs={"id": "Top"})
         user_tag = top_tag.find(href="/member/" + self.username)
         if not user_tag:
-            print "login failed !"
-            return
+            print datetime.datetime.now(), " : v2ex signin failed for ", self.username
+            return False
+        else:
+            return True
 
-        # check for award info
-        award_tag = main_soup.find(href="/mission/daily")
-        if not award_tag:
-            print "You have got the award already !"
-            return
+    def unchecked(self):
+        award_tag = self.main_soup.find(href="/mission/daily")
+        if award_tag:
+            return True
+        else:
+            print datetime.datetime.now(), " : v2ex has already checked in !"
+            return True
 
+    def checkin(self):
         # get award if haven't got it
-        get_award_req = self.v2ex_session.get(self.award_url, headers=self.headers)
+        get_award_req = self.v2ex_session.get(
+            self.award_url, headers=self.headers)
         get_award_soup = BeautifulSoup(get_award_req.content)
         button_tag = get_award_soup.find('input', attrs={'type': 'button'})
         click_href = button_tag.attrs["onclick"]
         first_dot_index = click_href.find("'")
         last_dot_index = click_href.find("'", first_dot_index + 1)
-        click_url = self.main_url + click_href[first_dot_index + 1: last_dot_index]
+        click_url = self.main_url + click_href[
+            first_dot_index + 1: last_dot_index]
         time.sleep(80)
         award_req = self.v2ex_session.get(click_url, headers=self.headers)
-        award_soup = BeautifulSoup(award_req.content)
+        if award_req.status_code == requests.codes.ok:
+            print datetime.datetime.now(), " : v2ex checkin successfully ! \n"
+        else:
+            print datetime.datetime.now(), " : v2ex checkin failed with ", self.username, " ! \n"
+
+    def run(self):
+        if self.login() and self.unchecked():
+            self.checkin()
