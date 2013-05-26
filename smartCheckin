@@ -1,17 +1,18 @@
 #!/usr/bin/python
 # encoding:utf-8
 
-import os
+import Xiami
+import V2EX
 
-self_path = os.path.split(os.path.realpath(__file__))[0]
+print "smartCheckin start ..."
+##Xiami Checkin
+xiami = Xiami.Xiami("twilight.zheng@gmail.com", "zllz8374721")
+xiami.login()
+if xiami.unchecked():
+    xiami.checkin()
 
-list = os.listdir(self_path)
-
-for line in list:
-    filename = os.path.join(self_path, line)
-    if os.path.isfile(filename):
-        ext_name = filename.split('.')[-1]
-        if (ext_name == 'py'):
-            os.system('python ' + filename)
+##V2EX Checkin
+v2ex = V2EX.V2EX("jinyue524", "zllz8374721")
+v2ex.get_award()
 
 print "smartCheckin done!"
