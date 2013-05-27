@@ -49,8 +49,7 @@ class Xiami:
         main_req = self.xiami_session.get(self.main_url, headers=self.headers)
         self.main_soup = BeautifulSoup(main_req.content)
         drop_tag = self.main_soup.find('div', attrs={"class": "more_dropInn"})
-        logout_tag = drop_tag.find(href="/member/logout")
-        if logout_tag:
+        if drop_tag:
             #得到个人签到的URL地址
             #得到块中一个href对应的地址，再提取用户ID
             self.checkin_url = self.checkin_url + drop_tag.a.get("href").split('/')[-1]

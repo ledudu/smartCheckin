@@ -3,14 +3,22 @@
 
 import Xiami
 import V2EX
+import Load
 
 print "smartCheckin start ... \n"
+
 ##Xiami Checkin
-xiami = Xiami.Xiami("twilight.zheng@gmail.com", "zllz8374721")
-xiami.run()
+account, success = Load.get("Xiami.json")
+if success:
+    for email in account.keys():
+        xiami = Xiami.Xiami(email, account[email])
+        xiami.run()
 
 ##V2EX Checkin
-v2ex = V2EX.V2EX("jinyue524", "zllz8374721")
-v2ex.run()
+account,success = Load.get("V2EX.json")
+if success:
+    for username in account.keys():
+        v2ex = V2EX.V2EX(username, account[username])
+        v2ex.run()
 
 print "smartCheckin done!"
