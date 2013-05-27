@@ -59,8 +59,7 @@ class Xiami:
             return False
 
     def unchecked(self):
-        coins_tag = self.main_soup.find('div', attrs={'id': "ys_coins"})
-        checkin_text = coins_tag.find('a', attrs={
+        checkin_text = self.main_soup.find('a', attrs={
                                       'class': "checkin text", 'id': "check_in"})
         if checkin_text:
             return True
@@ -77,6 +76,7 @@ class Xiami:
             print datetime.datetime.now(), " : Xiami checkin failed with ", self.email, " ! \n"
 
     def run(self):
-        if self.login() and self.unchecked():
-            self.checkin()
+        if self.login():
+            if self.unchecked():
+                self.checkin()
             
