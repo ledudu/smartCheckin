@@ -70,8 +70,8 @@ class V2EX:
         if award_tag:
             return True
         else:
-            print datetime.datetime.now(), " : v2ex has already checked in !"
-            return True
+            print datetime.datetime.now(), " : v2ex has already checked in ! \n"
+            return False
 
     def checkin(self):
         # get award if haven't got it

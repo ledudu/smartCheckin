@@ -4,7 +4,7 @@
 import Xiami
 import V2EX
 
-print "smartCheckin start ..."
+print "smartCheckin start ... \n"
 ##Xiami Checkin
 xiami = Xiami.Xiami("twilight.zheng@gmail.com", "zllz8374721")
 xiami.run()
