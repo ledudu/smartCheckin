@@ -35,5 +35,4 @@ nosetests.xml
 .pydevproject
 log
 *.dat
-V2EX.json
-Xiami.json
+*.json
