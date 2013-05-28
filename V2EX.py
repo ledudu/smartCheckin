@@ -27,12 +27,14 @@ class V2EX:
     post_headers = {"User-Agent": user_agent,
                     "Referer": "http://www.v2ex.com/signin"}
     headers = {"User-Agent": user_agent}
-    v2ex_session = requests.Session()
-    main_soup = BeautifulSoup()
+    v2ex_session = {}
+    main_soup = {}
 
     def __init__(self, username, password):
         self.username = username
         self.password = password
+        self.v2ex_session = requests.Session()
+        self.main_soup = BeautifulSoup()
         print datetime.datetime.now(), " : start 'V2EX' checkin for  ", self.username
 
     def login(self):
@@ -91,5 +93,6 @@ class V2EX:
             print datetime.datetime.now(), " : v2ex checkin failed with ", self.username, " ! \n"
 
     def run(self):
-        if self.login() and self.unchecked():
-            self.checkin()
+        if self.login():
+            if self.unchecked():
+                self.checkin()

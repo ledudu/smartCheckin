@@ -15,7 +15,7 @@ if success:
         xiami.run()
 
 ##V2EX Checkin
-account,success = Load.get("V2EX.json")
+account, success = Load.get("V2EX.json")
 if success:
     for username in account.keys():
         v2ex = V2EX.V2EX(username, account[username])
