@@ -40,8 +40,6 @@ class Xiami:
         print datetime.datetime.now(), " : start 'Xiami' checkin for ", self.email
 
     def login(self):
-        begin = self.xiami_session.get(self.main_url, headers=self.headers)
-        print begin.content
         login_info = {
             "email": self.email,
             "password": self.password,
@@ -64,8 +62,6 @@ class Xiami:
             return False
 
     def unchecked(self):
-        #print self.main_soup
-        raw_input("...")
         checkin_text = self.main_soup.find('a', attrs={
                                            'class': "checkin text", 'id': "check_in"})
         if checkin_text:
