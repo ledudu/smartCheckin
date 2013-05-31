@@ -3,6 +3,7 @@
 # import datetime
 import smtplib
 import email.mime.text
+import sys
 from time import sleep
 
 
@@ -22,21 +23,24 @@ class Notify_Admin:
 
     def check_error(self, filename):
         lines = file(filename, 'r').readlines()
-        for line in lines:
-            print line
+        Errors = ""
+        for each in lines:
+            if each.find("failed") != -1:
+                Errors += each
+        if Errors != "":
+            self.send_mail(Errors)
 
     def send_mail(self, text):
         print "Connecting Gmail Server ..."
         smtp = smtplib.SMTP(self.host, self.port, timeout=25)
-        smtp.ehlo()
         smtp.starttls()
-        smtp.ehlo()
 
         try:
             print 'Logging Gmail Server ...'
             smtp.login(self.username, self.password)
         except:
             print "Login Error *****"
+            sys.exit()
 
         msg = email.mime.text.MIMEText(text)
         msg['From'] = self.username
@@ -46,8 +50,3 @@ class Notify_Admin:
         smtp.sendmail(self.username, self.target, msg.as_string())
         sleep(5)
         smtp.quit()
-
-if __name__ == '__main__':
-    mail = Notify_Admin(
-        "twilight.zheng@gmail.com", "samien.zheng@gmail.com", "Twilight21")
-    mail.check_error("log")

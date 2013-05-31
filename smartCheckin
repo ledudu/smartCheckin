@@ -4,6 +4,7 @@
 import Xiami
 import V2EX
 import Load
+import Notify
 
 print "smartCheckin start ... \n"
 
@@ -22,3 +23,6 @@ if success:
         v2ex.run()
 
 print "smartCheckin done!"
+
+notify = Notify.Notify_Admin("twilight.zheng@gmail.com", "samien.zheng@gmail.com", "Twilight21")
+notify.check_error("log")

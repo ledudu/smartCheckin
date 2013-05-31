@@ -58,7 +58,7 @@ class Xiami:
                 drop_tag.a.get("href").split('/')[-1]
             return True
         else:
-            print datetime.datetime.now(), " : Xiami login failed for ", self.email
+            print datetime.datetime.now(), " : Xiami login failed for ", self.email + " ! \n"
             return False
 
     def unchecked(self):
