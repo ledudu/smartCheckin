@@ -9,7 +9,7 @@ TARGET="$PWD/scheck"
 cat > scheck <<EOF
 #!/bin/bash
 cd $PWD
-python smartCheckin
+python smartCheckin > log 2>&1
 cd -
 EOF
 
