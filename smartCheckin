@@ -24,5 +24,5 @@ if success:
 
 print "smartCheckin done!"
 
-notify = Notify.Notify_Admin("twilight.zheng@gmail.com", "samien.zheng@gmail.com", "Twilight21")
+notify = Notify.Notify_Admin("qmzheng0605@gmail.com", "twilight.zheng@gmail.com", "Twilight21")
 notify.check_error("log")
