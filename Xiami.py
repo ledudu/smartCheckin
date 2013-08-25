@@ -9,10 +9,10 @@ except ImportError:
     print "please try 'sudo pip install requests' to fix it !"
 
 try:
-    from bs4 import BeautifulSoup
+    import BeautifulSoup
 except ImportError:
     print ImportError
-    print "please try 'sudo apt-get install python-bs4' to fix it !"
+    print "please try 'sudo pip install BeautifulSoup ' to fix it !"
 
 
 class Xiami:
@@ -36,7 +36,7 @@ class Xiami:
         self.email = email
         self.password = password
         self.xiami_session = requests.Session()
-        self.main_soup = BeautifulSoup()
+        self.main_soup = BeautifulSoup.BeautifulSoup()
         print datetime.datetime.now(), " : start 'Xiami' checkin for ", self.email
 
     def login(self):
@@ -49,7 +49,7 @@ class Xiami:
         self.xiami_session.post(
             self.login_url, data=login_info, headers=self.post_headers)
         main_req = self.xiami_session.get(self.main_url, headers=self.headers)
-        self.main_soup = BeautifulSoup(main_req.content)
+        self.main_soup = BeautifulSoup.BeautifulSoup(main_req.content)
         drop_tag = self.main_soup.find('div', attrs={"class": "more_dropInn"})
         if drop_tag:
             # 得到个人签到的URL地址
