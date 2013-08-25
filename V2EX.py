@@ -9,10 +9,10 @@ except ImportError:
     print "please try 'sudo pip install requests' to fix it !"
 
 try:
-    from bs4 import BeautifulSoup
+    import BeautifulSoup
 except ImportError:
     print ImportError
-    print "please try 'sudo apt-get install python-bs4' to fix it !"
+    print "please try 'sudo pip install BeautifulSoup' to fix it !"
 
 
 class V2EX:
@@ -20,12 +20,12 @@ class V2EX:
     """auto checkin for V2EX and get rewards"""
     username = ''
     password = ''
-    signin_url = "http://www.v2ex.com/signin"
-    award_url = "http://www.v2ex.com/mission/daily"
-    main_url = "http://www.v2ex.com"
-    user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.63 Safari/537.31"
+    signin_url = "https://www.v2ex.com/signin"
+    award_url = "https://www.v2ex.com/mission/daily"
+    main_url = "https://www.v2ex.com"
+    user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:23.0) Gecko/20100101 Firefox/23.0"
     post_headers = {"User-Agent": user_agent,
-                    "Referer": "http://www.v2ex.com/signin"}
+                    "Referer": signin_url}
     headers = {"User-Agent": user_agent}
     v2ex_session = {}
     main_soup = {}
@@ -34,18 +34,18 @@ class V2EX:
         self.username = username
         self.password = password
         self.v2ex_session = requests.Session()
-        self.main_soup = BeautifulSoup()
+        self.main_soup = BeautifulSoup.BeautifulSoup()
         print datetime.datetime.now(), " : start 'V2EX' checkin for  ", self.username
 
     def login(self):
         # get login_info random 'once' value
         v2ex_main_req = self.v2ex_session.get(
             self.signin_url, headers=self.headers)
-        v2ex_main_tag = BeautifulSoup(v2ex_main_req.content)
+        v2ex_main_tag = BeautifulSoup.BeautifulSoup(v2ex_main_req.content)
         form_tag = v2ex_main_tag.find(
             'form', attrs={"method": "post", "action": "/signin"})
         input_once_tag = form_tag.find('input', attrs={"name": "once"})
-        input_once_value = input_once_tag.attrs["value"]
+        input_once_value = input_once_tag.attrs[1][1]
         login_info = {
             "next": "/",
             "u": self.username,
@@ -58,7 +58,7 @@ class V2EX:
         self.v2ex_session.post(
             self.signin_url, data=login_info, headers=self.post_headers)
         main_req = self.v2ex_session.get(self.main_url, headers=self.headers)
-        self.main_soup = BeautifulSoup(main_req.content)
+        self.main_soup = BeautifulSoup.BeautifulSoup(main_req.content)
         top_tag = self.main_soup.find('div', attrs={"id": "Top"})
         user_tag = top_tag.find(href="/member/" + self.username)
         if not user_tag:
@@ -79,9 +79,9 @@ class V2EX:
         # get award if haven't got it
         get_award_req = self.v2ex_session.get(
             self.award_url, headers=self.headers)
-        get_award_soup = BeautifulSoup(get_award_req.content)
+        get_award_soup = BeautifulSoup.BeautifulSoup(get_award_req.content)
         button_tag = get_award_soup.find('input', attrs={'type': 'button'})
-        click_href = button_tag.attrs["onclick"]
+        click_href = button_tag.attrs[3][1]
         first_dot_index = click_href.find("'")
         last_dot_index = click_href.find("'", first_dot_index + 1)
         click_url = self.main_url + click_href[
@@ -96,3 +96,4 @@ class V2EX:
         if self.login():
             if self.unchecked():
                 self.checkin()
+
